@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Nous deux</title>
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Nous deux"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><link rel="apple-touch-icon" href="icon.png">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script><script src="config.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Pacifico&display=swap">
+<style>
+:root{--bg:#fdf1f5;--bg2:#eef0ff;--card:#fffafc;--ink:#4a3f55;--mute:#9a8fa6;--pink:#f7c6d9;--lav:#dcd3f6;--mint:#cdeee3;--acc:#f19bbd;--shadow:#d3a1ba66;--line:#f1dce6;--doodle:#f1a9c6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a2230;--bg2:#252a3d;--card:#362c3e;--ink:#f3e8f1;--mute:#b3a5bd;--pink:#6b3f56;--lav:#473f6b;--mint:#2f5a50;--acc:#e97fab;--shadow:#0006;--line:#4a3d54;--doodle:#8a5a78}}
+:root[data-theme="dark"]{--bg:#2a2230;--bg2:#252a3d;--card:#362c3e;--ink:#f3e8f1;--mute:#b3a5bd;--pink:#6b3f56;--lav:#473f6b;--mint:#2f5a50;--acc:#e97fab;--shadow:#0006;--line:#4a3d54;--doodle:#8a5a78}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;height:100%;display:flex;flex-direction:column;font-family:Quicksand,system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,var(--bg),var(--bg2));overflow:hidden}
+header{text-align:center;padding:14px 16px 4px;z-index:2}
+h1{font-family:Pacifico,cursive;font-weight:400;font-size:26px;margin:0;color:var(--acc)}
+#sub{font-size:12px;color:var(--mute)}
+#warn{margin:6px 16px;padding:8px 12px;border-radius:14px;background:var(--lav);font-size:12px;text-align:center;z-index:2}
+main{position:relative;flex:1;max-width:480px;width:100%;margin:0 auto}
+.page{position:absolute;inset:0;overflow-y:auto;padding:10px 16px 130px;opacity:0;transform:translateY(16px) scale(.98);pointer-events:none;transition:opacity .35s ease,transform .35s ease;z-index:1}
+.page.on{opacity:1;transform:none;pointer-events:auto}
+h2{font-size:18px;margin:6px 0 10px}
+.card{background:var(--card);border-radius:22px;padding:14px;margin-bottom:12px;box-shadow:0 6px 18px var(--shadow)}
+input,textarea,select,button{font:inherit;color:inherit}
+input,textarea,select{width:100%;border:2px solid var(--line);background:var(--bg);border-radius:14px;padding:10px 12px;margin-bottom:8px;outline:none}
+input:focus,textarea:focus{border-color:var(--acc)}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:16px;padding:10px 16px;font-weight:700;box-shadow:0 4px 0 #0002;cursor:pointer}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #0002}
+.soft{background:var(--lav);color:var(--ink)}
+.row{display:flex;gap:8px;align-items:center}.row>*{margin-bottom:0}
+.x{background:none;border:0;color:var(--mute);font-size:18px;cursor:pointer}
+.date{font-size:12px;color:var(--mute)}
+.moment{display:flex;gap:10px;align-items:flex-start}.moment .dot{font-size:22px}.moment b{display:block}
+.q{background:linear-gradient(135deg,var(--pink),var(--lav));font-size:19px;font-weight:700;text-align:center;padding:24px 16px}
+.polaroid{background:var(--card);padding:12px 12px 36px;border-radius:10px;box-shadow:0 10px 26px var(--shadow);transform:rotate(-2deg);text-align:center}
+.polaroid img{width:100%;max-height:50vh;object-fit:cover;border-radius:6px;display:block}
+.polaroid p{font-family:Pacifico,cursive;color:var(--acc);margin:10px 0 0}
+.empty{text-align:center;color:var(--mute);padding:20px;font-size:14px}
+#msgs{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.m{max-width:80%;padding:8px 12px;border-radius:18px;background:var(--card);box-shadow:0 2px 8px var(--shadow);word-break:break-word}
+.m.me{align-self:flex-end;background:var(--pink)}
+.m img,.m video{max-width:100%;border-radius:12px;display:block}
+.m small{display:block;font-size:10px;color:var(--mute);margin-top:2px}
+#bar{position:sticky;bottom:0;background:var(--card);padding:8px;border-radius:20px;box-shadow:0 6px 18px var(--shadow)}
+.bar{margin-top:6px}
+.prog{height:12px;border-radius:8px;background:var(--line);overflow:hidden;margin:8px 0}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--lav));border-radius:8px;transition:width .5s}
+.goal.done{opacity:.65}
+nav{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:456px;margin:auto;display:flex;justify-content:space-around;background:var(--card);border-radius:30px;padding:8px 6px;box-shadow:0 12px 30px var(--shadow),inset 0 2px 0 #fff9,inset 0 -3px 0 var(--line);z-index:5}
+.tab{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--mute);width:62px;padding:6px 0;border-radius:22px;cursor:pointer;transition:transform .3s cubic-bezier(.3,1.6,.5,1),background .3s,box-shadow .3s}
+.tab span{font-size:22px;transition:transform .3s}
+.tab.on{transform:translateY(-14px);background:var(--pink);color:var(--ink);box-shadow:0 8px 16px var(--shadow),inset 0 2px 0 #fff8}
+.tab.on span{transform:scale(1.2)}
+.bg{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.bg i{position:absolute;font-style:normal;color:var(--doodle);opacity:.3;animation:fl 7s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-14px) rotate(8deg)}}
+#toast{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:14px;font-size:13px;z-index:9;opacity:0;transition:opacity .3s;pointer-events:none}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:8px;text-align:center}
+.cal span{font-size:11px;color:var(--mute)}
+.cal button{aspect-ratio:1;border:0;border-radius:50%;background:none;position:relative;font-size:14px;cursor:pointer;padding:0}
+.cal button.t{border:2px solid var(--acc)}.cal button.s{background:var(--acc);color:#fff}
+.cal button.e::after{content:'♡';position:absolute;bottom:-1px;left:0;right:0;font-size:9px;color:var(--acc)}
+.cal button.s.e::after{color:#fff}.cal button.o{visibility:hidden}
+#bar{bottom:84px;z-index:3}#ci{min-width:0;flex:1}
+#bar{position:fixed;left:12px;right:12px;max-width:456px;margin:auto;bottom:calc(88px + env(safe-area-inset-bottom,0px));z-index:6}#bar[hidden]{display:none}#p3{padding-bottom:190px}
+.tab{width:auto;flex:1;min-width:0}
+</style></head><body>
+<div class="bg" id="bg"></div>
+<header><h1>Nous deux</h1><div id="sub"></div></header>
+<div id="warn" hidden>Connexion impossible : vérifie config.js et ta connexion internet.</div>
+<main>
+<section class="page on" id="p0"><h2>💞 Nos moments</h2>
+<div class="card"><div class="row" style="justify-content:space-between"><button class="x" id="cp">‹</button><b id="cm" style="text-transform:capitalize"></b><button class="x" id="cn">›</button></div><div class="cal" id="cg"></div></div>
+<div class="card"><b id="sd" style="text-transform:capitalize"></b><div id="ml"></div></div>
+<div class="card"><input type="date" id="md"><input id="mt" placeholder="Titre (notre premier voyage…)"><textarea id="mn" rows="2" placeholder="Un petit souvenir…"></textarea><button class="btn" id="madd">Ajouter ♡</button></div></section>
+<section class="page" id="p1"><h2>💭 La question du jour</h2><div class="card q" id="qt"></div>
+<div class="card"><b>Ta réponse</b><textarea id="qa" rows="3" placeholder="Qu’est-ce que tu en penses ?"></textarea><button class="btn" id="qs">Enregistrer</button></div><div class="card" id="qo"></div></section>
+<section class="page" id="p2"><h2>📷 Photo du jour</h2><div id="ph"></div><div class="date" id="pc" style="text-align:center;margin:12px 0"></div>
+<div class="row bar"><button class="btn soft" id="pn">Une autre ✨</button><label class="btn">＋ Ajouter des photos<input type="file" accept="image/*" id="pf" hidden multiple></label></div></section>
+<section class="page" id="p3"><h2>💬 Notre bulle</h2>
+<div class="card"><div id="loc" class="date" style="font-size:14px;color:var(--ink)"></div><button class="btn soft bar" id="lb">📍 Partager ma position</button><div class="row bar"><input id="lc" placeholder="Adresse, ville, lieu… (12 rue de Rivoli, Paris)"><button class="btn soft" id="lo">OK</button></div></div>
+<div id="msgs"></div>
+</section>
+<section class="page" id="p4"><h2>🎯 Nos projets</h2>
+<div class="card"><input id="gp" placeholder="📍 Lieu (Tokyo, Japon…)"><input id="gt" placeholder="Nom du projet"><div class="row"><input id="gm" type="number" min="0" placeholder="Budget (€)"><input id="gd" placeholder="Dans combien de temps ? (6 mois, 2 ans, 10 jours…)"></div><textarea id="gn" rows="2" placeholder="Petite description…" style="margin-top:8px"></textarea><button class="btn" id="gadd">Ajouter ✨</button></div><div id="gl"></div></section>
+<section class="page" id="p5"><h2>🍿 À regarder ensemble</h2>
+<div class="card"><input id="ft" placeholder="Titre du film ou de la série…"><div class="row"><select id="fk"><option value="film">🎬 Film</option><option value="serie">📺 Série</option></select><select id="fp"><option value="1">🔥 Très envie</option><option value="2" selected>👍 Envie</option><option value="3">😌 Un jour</option></select></div><button class="btn bar" id="fadd">Ajouter ✨</button></div><div class="date" id="fc" style="margin:0 4px 8px"></div><div id="fl"></div></section>
+</main>
+<div id="bar" hidden><div class="row"><label class="btn soft" style="padding:10px 12px">📎<input type="file" accept="image/*,video/*" id="cf" hidden></label><button class="btn soft" id="rec" style="padding:10px 12px">🎤</button><input id="ci" placeholder="Un doux message…"><button class="btn" id="cs">➤</button></div></div><input type="file" accept="audio/*" capture id="af" hidden><nav id="nav"></nav><div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s);
+const h=(t,p={},...k)=>{const e=document.createElement(t);for(const a in p){a==='class'?e.className=p[a]:a.startsWith('on')?e.addEventListener(a.slice(2),p[a]):e[a]=p[a]}k.flat().forEach(c=>e.append(c));return e};
+let db=null,assets=null,uid='moi';
+const td=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};let day=td();
+const toast=t=>{const e=$('#toast');e.textContent=t;e.style.opacity=1;setTimeout(()=>e.style.opacity=0,2600)};
+const ago=t=>{const m=Math.round((Date.now()-t)/60000);return m<1?'à l’instant':m<60?'il y a '+m+' min':m<1440?'il y a '+Math.round(m/60)+' h':'il y a '+Math.round(m/1440)+' j'};
+const list=(col,cb,q)=>{try{(q||db.collection(col)).onSnapshot(s=>cb(s.docs.map(d=>({id:d.id,...d.data()}))),e=>toast('Synchro impossible : '+((e&&e.code)||'')))}catch(e){}};
+const del=(col,id)=>db&&db.collection(col).doc(id).delete().catch(e=>toast('Suppression impossible : '+((e&&e.code)||'')));
+const ask=(b,fn)=>{if(b.dataset.s){clearTimeout(+b.dataset.s);fn();return}b.textContent='Supprimer ?';b.style.cssText='font-size:12px;color:var(--acc);font-weight:700';b.dataset.s=setTimeout(()=>{b.textContent='×';b.style.cssText='';delete b.dataset.s},3000)};
+const up=async b=>{if(!assets)throw 0;return (await assets.upload(b)).url};
+// fond mignon
+const ch=['♡','✦','♥','☆','~','✿','·','⋆'];
+for(let i=0;i<18;i++){const s=document.createElement('i');s.textContent=ch[i%ch.length];s.style.cssText=`left:${(i*37)%96}%;top:${(i*53)%92}%;font-size:${16+(i*7)%22}px;animation-delay:${-i*.7}s`;$('#bg').append(s)}
+// onglets
+const tabs=[['💞','Moments'],['💭','Question'],['📷','Photo'],['💬','Bulle'],['🎯','Projets'],['🍿','Films']];
+tabs.forEach((t,i)=>$('#nav').append(h('button',{class:'tab'+(i?'':' on'),onclick:()=>go(i)},h('span',{},t[0]),t[1])));
+function go(i){$('#bar').hidden=i!==3;document.querySelectorAll('.page').forEach((p,j)=>p.classList.toggle('on',i===j));document.querySelectorAll('.tab').forEach((p,j)=>p.classList.toggle('on',i===j));if(i===3)setTimeout(()=>{$('#p3').scrollTop=1e6},60);location.hash='';}
+// moments (calendrier)
+let moms=[],cy=new Date().getFullYear(),cmo=new Date().getMonth(),sel=day;
+const p2=n=>String(n).padStart(2,'0');
+function drawCal(){const g=$('#cg');g.replaceChildren();['L','M','M','J','V','S','D'].forEach(x=>g.append(h('span',{},x)));
+$('#cm').textContent=new Date(cy,cmo,1).toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+const off=(new Date(cy,cmo,1).getDay()+6)%7,n=new Date(cy,cmo+1,0).getDate();
+for(let i=0;i<off;i++)g.append(h('button',{class:'o'}));
+for(let d=1;d<=n;d++){const k=cy+'-'+p2(cmo+1)+'-'+p2(d);g.append(h('button',{class:(k===day?'t ':'')+(k===sel?'s ':'')+(moms.some(m=>m.d===k)?'e':''),onclick:()=>{sel=k;$('#md').value=k;drawCal();drawDay()}},''+d))}}
+function drawDay(){$('#sd').textContent=new Date(sel+'T12:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});const e=$('#ml');e.replaceChildren();const a=moms.filter(m=>m.d===sel);if(!a.length)return e.append(h('div',{class:'empty'},'Rien d’enregistré ce jour-là ✨'));a.forEach(m=>e.append(h('div',{class:'moment',style:'margin-top:8px'},h('span',{class:'dot'},'💖'),h('div',{style:'flex:1'},h('b',{},m.t),m.n||''),h('button',{class:'x',onclick:e=>ask(e.currentTarget,()=>del('moments',m.id))},'×'))))}
+function renderMoments(a){moms=a;drawCal();drawDay()}
+$('#cp').onclick=()=>{if(--cmo<0){cmo=11;cy--}drawCal()};
+$('#cn').onclick=()=>{if(++cmo>11){cmo=0;cy++}drawCal()};
+$('#md').value=day;
+$('#madd').onclick=async()=>{const t=$('#mt').value.trim();if(!t||!db)return toast(db?'Ajoute un titre ♡':'Pas de synchro');const d=$('#md').value||day;await db.collection('moments').add({d,t,n:$('#mn').value.trim(),by:uid});$('#mt').value=$('#mn').value='';sel=d;cy=+d.slice(0,4);cmo=+d.slice(5,7)-1;drawCal();drawDay();toast('Moment ajouté ♡')};
+// question du jour
+const TH={'💞 Notre amour':['Qu’est-ce qui te fait te sentir le plus aimé(e) au quotidien ?','Quel petit geste de ma part te touche plus que tout ?','Qu’est-ce que l’amour, pour toi, quand on est fatigués ou qu’on se dispute ?','Qu’est-ce que tu admires le plus chez moi ?','Comment aimes-tu qu’on se réconcilie après une dispute ?','Qu’est-ce que je fais sans m’en rendre compte qui te rend heureux(se) ?','Penses-tu qu’il faut tout se dire dans un couple ?','Dans un couple, vaut-il mieux se ressembler ou se compléter ?','Quelle est ta plus grande peur dans notre relation ?','De quoi as-tu besoin pour te sentir vraiment écouté(e) ?','Quel mot ou quelle attention aimerais-tu recevoir plus souvent ?','Qu’est-ce qui rend notre couple unique selon toi ?'],
+'🔥 Intime':['Quel moment de tendresse avec moi reste gravé dans ta mémoire ?','Qu’est-ce qui te fait le plus craquer physiquement chez moi ?','Quel type de câlin ou de caresse préfères-tu ?','Quelle soirée en tête-à-tête idéale imagines-tu pour nous ?','Quelle envie aimerais-tu qu’on explore ensemble, en douceur ?','Qu’est-ce qui te met en confiance pour te lâcher complètement ?','Quel est ton souvenir le plus sensuel de nous deux ?','Qu’est-ce que tu aimerais que je fasse plus souvent pour te séduire ?','Quelle est ta plus grande insécurité, et comment puis-je t’aider à la traverser ?','À quel moment de la journée te sens-tu le plus proche de moi ?','Quelle petite surprise coquine te ferait sourire aujourd’hui ?','Qu’est-ce que tu n’oses pas encore me dire, et que j’aimerais entendre ?'],
+'🌍 Rêves & avenir':['Où te vois-tu dans 10 ans, et avec qui ?','Comment imagines-tu notre maison idéale ?','Quel voyage rêves-tu de faire avec moi ?','Quel rêve d’enfant aimerais-tu encore réaliser ?','À quoi ressemble pour toi une journée parfaite dans 5 ans ?','Voudrais-tu des enfants, des animaux, ou un autre projet de famille ?','Quel projet fou aimerais-tu qu’on lance ensemble ?','Dans quel pays pourrais-tu vivre un an ?','Que voudrais-tu apprendre ensemble ?','Quelle promesse aimerais-tu qu’on se fasse ?','Quelle tradition veux-tu créer pour nous ?','Qu’est-ce qui compte le plus pour construire notre avenir ?'],
+'🌸 Souvenirs':['Quel moment de notre histoire referais-tu sans hésiter ?','Qu’as-tu ressenti la toute première fois qu’on s’est vus ?','Quel est ton plus beau souvenir avec moi cette année ?','Quelle est la plus belle preuve d’amour que tu aies reçue ?','Quel fou rire à deux t’a le plus marqué ?','Quel moment difficile nous a rendus plus forts ?','Quelle chanson te rappelle nous ?','Quel endroit représente le mieux notre couple ?','Quel conseil donnerais-tu à notre moi d’il y a 3 ans ?','Quelle est ta plus belle surprise dans notre relation ?','Quel détail de notre rencontre te fait encore sourire ?','Quelle soirée garde une place spéciale pour toi ?'],
+'🧭 Vie & choix':['Quel choix de vie t’a le plus changé(e) ?','Préfères-tu une vie d’aventures ou une vie douce et stable ?','Faut-il toujours suivre sa raison plutôt que son cœur ?','Qu’est-ce que le bonheur représente pour toi ?','Quelle décision difficile t’a finalement rendu(e) libre ?','Quel regret aimerais-tu transformer en leçon ?','De quoi es-tu le plus fier(ère) ?','Qu’est-ce qui te donne du courage quand ça va mal ?','L’argent rend-il heureux ? Quelle place lui donnes-tu ?','Pardonner, est-ce oublier ?','Quelle valeur ne négocierais-tu jamais ?','Que changerais-tu dans ta vie si tu n’avais peur de rien ?'],
+'😄 Pour rire':['Si on était un duo de film ou de série, lesquels serait-on ?','Quelle est ma manie la plus drôle selon toi ?','Quel super-pouvoir aimerais-tu qu’on ait à deux ?','Que ferait-on si on gagnait un million demain ?','Qui de nous deux ferait le mieux survivre l’autre sur une île déserte ?','Quel surnom complètement bizarre me donnerais-tu ?','Quel talent caché aimerais-tu avoir ?','Quel film ou quelle série revoir ensemble pour la 10e fois ?','Quel plat raté de ma part te fait encore rire ?','Si on ouvrait un restaurant ensemble, ce serait quoi ?','Quelle phrase je répète tout le temps ?','Quel serait le titre de notre biographie de couple ?']};
+const Q=[];for(let i=0;i<12;i++)for(const t in TH)Q.push([t,TH[t][i]]);
+let ansAll=[];
+function renderQ(){const i=Math.floor(new Date(day+'T12:00')/864e5)%Q.length;$('#qt').replaceChildren(h('div',{class:'date',style:'margin-bottom:8px'},Q[i][0]),Q[i][1])}
+renderQ();
+$('#qs').onclick=async()=>{const t=$('#qa').value.trim();if(!t||!db)return;try{await db.collection('answers').doc(day+'_'+uid).set({day,uid,t});toast('Réponse enregistrée ♡')}catch(e){toast('Non enregistrée : '+((e&&e.code)||'erreur'))}};
+function renderAnswers(){const a=ansAll.filter(x=>x.day===day),mine=a.find(x=>x.uid===uid),o=a.find(x=>x.uid!==uid);if(mine&&document.activeElement!==$('#qa'))$('#qa').value=mine.t;const e=$('#qo');e.replaceChildren(h('b',{},'Sa réponse'),h('div',{style:'margin-top:6px'},!o?'Elle n’a pas encore répondu…':mine?o.t:'Réponds d’abord pour découvrir la sienne 🤫'))}
+// photo du jour
+let photos=[],dailies=[],dLoaded=false,wrote={},shuffle=0;
+const hs=s=>[...s].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
+function renderPhoto(){const e=$('#ph');e.replaceChildren();$('#pc').textContent=photos.length?photos.length+' photo'+(photos.length>1?'s':'')+' dans votre album':'';if(!photos.length)return e.append(h('div',{class:'empty'},'Ajoute plein de photos de vous, une nouvelle s’affichera chaque jour ♡'));
+let p;if(shuffle)p=photos[(hs(day)+shuffle)%photos.length];else{const d=dailies.find(x=>x.id===day),f=d&&photos.find(x=>x.id===d.pid);if(f)p=f;else{const used=new Set(dailies.map(x=>x.pid)),pool=photos.filter(x=>!used.has(x.id)),c=pool.length?pool:photos;p=c.reduce((a,b)=>hs(day+b.id)<hs(day+a.id)?b:a);if(db&&dLoaded&&!d&&!wrote[day]){wrote[day]=1;db.collection('daily').doc(day).set({pid:p.id}).catch(()=>{})}}}
+e.append(h('div',{class:'polaroid'},h('img',{src:p.url,alt:'Photo de nous'}),h('p',{},shuffle?'Un autre souvenir ♡':'Photo du jour ♡')))}
+$('#pn').onclick=()=>{shuffle++;renderPhoto()};
+const small=async f=>{try{const b=await createImageBitmap(f),r=Math.min(1,1600/Math.max(b.width,b.height)),c=document.createElement('canvas');c.width=Math.round(b.width*r);c.height=Math.round(b.height*r);c.getContext('2d').drawImage(b,0,0,c.width,c.height);return (await new Promise(res=>c.toBlob(res,'image/jpeg',.85)))||f}catch(e){return f}};
+$('#pf').onchange=async e=>{const fs=[...e.target.files];e.target.value='';if(!db||!fs.length)return;let ok=0,ko=0;for(let i=0;i<fs.length;i+=3){await Promise.all(fs.slice(i,i+3).map(async f=>{try{const u=await up(await small(f));await db.collection('photos').add({url:u,by:uid,t:Date.now()});ok++}catch(x){ko++}}));toast('Envoi '+(ok+ko)+'/'+fs.length+'…')}toast(ok+' photo(s) ajoutée(s) ♡'+(ko?' · '+ko+' échec(s)':''))};
+// chat
+function renderMsgs(a){const e=$('#msgs');e.replaceChildren();a.sort((x,y)=>x.t-y.t).slice(-150).forEach(m=>{const me=m.uid===uid;let c;if(m.k==='img')c=h('img',{src:m.u});else if(m.k==='vid')c=h('video',{src:m.u,controls:true,playsInline:true});else if(m.k==='aud')c=h('audio',{src:m.u,controls:true});else c=m.x;e.append(h('div',{class:'m'+(me?' me':'')},c,h('small',{},ago(m.t),me?h('button',{class:'x',style:'font-size:12px;padding:0 0 0 8px',onclick:x=>ask(x.currentTarget,()=>del('messages',m.id))},'×'):'')))});const p=$('#p3');if(p.scrollHeight-p.scrollTop-p.clientHeight<400)setTimeout(()=>p.scrollTop=1e6,50)}
+const send=async d=>{if(!db){toast('Pas de connexion');return false}try{await db.collection('messages').add({uid,t:Date.now(),...d});return true}catch(e){toast('Message non envoyé : '+((e&&(e.message||e.code))||'erreur'));return false}};
+$('#cs').onclick=async()=>{const x=$('#ci').value.trim();if(!x)return;$('#ci').value='';if(!await send({k:'t',x}))$('#ci').value=x};
+$('#ci').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#cs').click()}});
+$('#cf').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{toast('Envoi…');await send({k:f.type.startsWith('video')?'vid':'img',u:await up(f)})}catch(x){toast('Envoi impossible')}e.target.value=''};
+let mr=null,chunks=[];
+$('#rec').onclick=async()=>{if(mr){mr.stop();return}try{const s=await navigator.mediaDevices.getUserMedia({audio:true});mr=new MediaRecorder(s);chunks=[];mr.ondataavailable=e=>chunks.push(e.data);mr.onstop=async()=>{s.getTracks().forEach(t=>t.stop());const mt=(mr.mimeType||'audio/webm').replace('audio','video').split(';')[0];mr=null;$('#rec').textContent='🎤';try{await send({k:'aud',u:await up(new Blob(chunks,{type:mt}))})}catch(x){toast('Vocal non envoyé')}};mr.start();$('#rec').textContent='⏹'}catch(x){toast('Micro bloqué ici : enregistre ton vocal avec l’appareil');$('#af').click()}};
+$('#af').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;try{toast('Envoi…');await send({k:'aud',u:await up(new Blob([f],{type:'video/mp4'}))})}catch(x){toast('Vocal non envoyé')}};
+// localisation
+const CITIES={paris:[48.8566,2.3522],lyon:[45.764,4.8357],marseille:[43.2965,5.3698],toulouse:[43.6047,1.4442],nice:[43.7102,7.262],nantes:[47.2184,-1.5536],bordeaux:[44.8378,-0.5792],lille:[50.6292,3.0573],strasbourg:[48.5734,7.7521],montpellier:[43.6108,3.8767],rennes:[48.1173,-1.6778],grenoble:[45.1885,5.7245],bruxelles:[50.8503,4.3517],genève:[46.2044,6.1432],montréal:[45.5017,-73.5673],casablanca:[33.5731,-7.5898],alger:[36.7538,3.0588],tunis:[36.8065,10.1815],dakar:[14.7167,-17.4677],londres:[51.5074,-0.1278],tokyo:[35.6762,139.6503]};
+let li=null;
+const setLoc=(lat,lng,src,x)=>db.collection('loc').doc(uid).set({lat,lng,t:Date.now(),uid,src:src||'gps',...(x||{})}).then(()=>toast('Position enregistrée ♡'+(x&&x.lieu?' '+x.lieu:''))).catch(e=>toast('Non enregistrée : '+((e&&e.code)||'erreur')));
+$('#lb').onclick=()=>{if(!db)return toast('Pas de synchro');if(!navigator.geolocation)return toast('GPS indisponible ici : écris ta ville');
+const go=()=>navigator.geolocation.getCurrentPosition(p=>setLoc(p.coords.latitude,p.coords.longitude),er=>{clearInterval(li);toast(er.code===1?'GPS bloqué ici : écris ta ville ci-dessous':'Position introuvable : écris ta ville ci-dessous')},{enableHighAccuracy:true,timeout:15000,maximumAge:60000});
+go();clearInterval(li);li=setInterval(go,60000);$('#lb').textContent='📍 Position partagée (actualisée chaque minute)'};
+$('#lo').onclick=async()=>{if(!db)return toast('Pas de synchro');const v=$('#lc').value.trim();if(!v)return toast('Écris une adresse ou une ville');
+const m=v.match(/(-?\d{1,3}\.\d+)[ ,;]+(-?\d{1,3}\.\d+)/);if(m)return setLoc(+m[1],+m[2],'coord');
+try{toast('Recherche de l’adresse…');const r=await(await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=fr&q='+encodeURIComponent(v))).json();if(r[0])return setLoc(+r[0].lat,+r[0].lon,'adresse',{lieu:r[0].display_name.split(',').slice(0,3).join(',')})}catch(x){}
+const c=CITIES[v.toLowerCase()];if(c)return setLoc(c[0],c[1],'ville',{lieu:v});toast('Adresse introuvable : ajoute la ville ou le pays')};
+const km=(a,b,c,d)=>{const r=x=>x*Math.PI/180,q=Math.sin(r(c-a)/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;return 12742*Math.asin(Math.sqrt(q))};
+function renderLoc(a){const me=a.find(x=>x.uid===uid),o=a.find(x=>x.uid!==uid),e=$('#loc');e.replaceChildren();
+if(me&&o){const d=km(me.lat,me.lng,o.lat,o.lng);e.append(h('b',{style:'font-size:18px'},'💞 '+(d<1?'Moins d’1 km':Math.round(d)+' km')+' nous séparent'),h('br'))}
+else e.append(me?'Sa position apparaîtra ici dès qu’elle sera partagée 📍':'Partage ta position pour voir la distance 📍');
+const ln=(w,x)=>{if(x)e.append(w+(x.lieu?' '+x.lieu:'')+' · '+ago(x.t)+' · ',h('a',{href:'https://www.google.com/maps?q='+x.lat+','+x.lng,target:'_blank',rel:'noopener',style:'color:var(--acc);font-weight:700'},'carte'),h('br'))};ln('📍 Sa position :',o);ln('📌 Toi :',me)}
+// projets
+$('#gadd').onclick=async()=>{const t=$('#gt').value.trim();if(!t||!db)return toast(db?'Donne un nom au projet':'Pas de synchro');const tx=$('#gd').value.trim().toLowerCase();let dd=0;for(const m of tx.matchAll(/(\d+(?:[.,]\d+)?)\s*(ans?|a|mois|m|semaines?|sem|jours?|j)\b/g)){const n=parseFloat(m[1].replace(',','.')),u=m[2];dd+=n*(/^a/.test(u)?365.25:u==='m'||u==='mois'?30.44:/^s/.test(u)?7:1)}if(tx&&!dd)return toast('Temps non compris : écris par ex. 6 mois, 2 ans, 10 jours');await db.collection('goals').add({t,p:$('#gp').value.trim(),n:$('#gn').value.trim(),m:+$('#gm').value||0,s:0,due:dd?Date.now()+dd*864e5:0,done:false,by:uid});['gt','gp','gn','gm','gd'].forEach(i=>$('#'+i).value='')};
+const eur=n=>n.toLocaleString('fr-FR')+' €';
+const left=t=>{const d=Math.ceil((t-Date.now())/864e5);return d<0?'échéance dépassée':d<1?'aujourd’hui':d<60?'dans '+d+' jour'+(d>1?'s':''):d<730?'dans '+Math.round(d/30.44)+' mois':'dans '+(d/365.25).toFixed(1).replace('.0','')+' ans'};
+const dfmt=t=>(t-Date.now())/864e5<60?{day:'numeric',month:'long',year:'numeric'}:{month:'long',year:'numeric'};
+function renderGoals(a){const e=$('#gl');e.replaceChildren();if(!a.length)return e.append(h('div',{class:'empty'},'Voyages, maison, rêves… notez vos projets ici ✨'));
+a.sort((x,y)=>x.done-y.done||(x.due||9e15)-(y.due||9e15)).forEach(g=>{const s=g.s||0,pc=g.m?Math.min(100,Math.round(s/g.m*100)):0,mo=g.due?Math.round((g.due-Date.now())/2630000000):null,inp=h('input',{type:'number',min:'0',placeholder:'+ €',style:'width:90px'});
+e.append(h('div',{class:'card goal'+(g.done?' done':'')},
+h('div',{class:'row'},h('b',{style:'flex:1;font-size:17px'},(g.e?g.e+' ':'')+g.t),h('button',{class:'x',onclick:e=>ask(e.currentTarget,()=>del('goals',g.id))},'×')),
+g.p?h('div',{class:'date'},'📍 '+g.p):'',
+g.n?h('div',{style:'margin:6px 0;font-size:14px'},g.n):'',
+g.due?h('div',{class:'date'},'⏳ '+left(g.due)+' · '+new Date(g.due).toLocaleDateString('fr-FR',dfmt(g.due))):'',
+h('div',{class:'prog'},h('i',{style:'width:'+pc+'%'})),
+h('div',{class:'date'},'💰 '+eur(s)+(g.m?' / '+eur(g.m)+' · '+pc+' %':'')),
+h('div',{class:'row bar'},inp,h('button',{class:'btn soft',onclick:()=>{const v=+inp.value;if(v>0)db.collection('goals').doc(g.id).update({s:s+v})}},'Ajouter'),h('button',{class:'btn',style:'margin-left:auto',onclick:()=>db.collection('goals').doc(g.id).update({done:!g.done})},g.done?'↩':'✓ Réalisé'))))})}
+// films & séries
+const PR=['🔥 Très envie','👍 Envie','😌 Un jour'];
+$('#fadd').onclick=async()=>{const t=$('#ft').value.trim();if(!t)return toast('Écris un titre 🍿');if(!db)return toast('Pas de synchro');try{await db.collection('movies').add({t,k:$('#fk').value,p:+$('#fp').value,w:false,tt:Date.now(),by:uid});$('#ft').value=''}catch(x){toast('Non ajouté : '+((x&&x.code)||'erreur'))}};
+$('#ft').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#fadd').click()}});
+const upd=(id,d)=>db.collection('movies').doc(id).update(d).catch(x=>toast('Erreur : '+((x&&x.code)||'')));
+function renderMovies(a){const e=$('#fl');e.replaceChildren();const w=a.filter(m=>m.w).length;$('#fc').textContent=a.length?(a.length-w)+' à voir · '+w+' vu'+(w>1?'s':'')+' ★':'';if(!a.length)return e.append(h('div',{class:'empty'},'Les films et séries à voir ensemble apparaîtront ici 🍿'));
+a.sort((x,y)=>(x.w?1:0)-(y.w?1:0)||x.p-y.p||x.tt-y.tt).forEach(m=>e.append(h('div',{class:'card row goal'+(m.w?' done':''),style:'padding:10px 12px'},
+h('button',{class:'x',style:'font-size:28px;color:var(--acc)',onclick:()=>upd(m.id,{w:!m.w})},m.w?'★':'☆'),
+h('div',{style:'flex:1;min-width:0'},h('b',{style:m.w?'text-decoration:line-through':''},m.t),h('div',{class:'date'},(m.k==='serie'?'📺 Série':'🎬 Film')+(m.w?' · vu ✓':''))),
+m.w?'':h('button',{class:'btn soft',style:'padding:6px 10px;font-size:12px',onclick:()=>upd(m.id,{p:m.p%3+1})},PR[m.p-1]),
+h('button',{class:'x',onclick:x=>ask(x.currentTarget,()=>del('movies',m.id))},'×'))))}
+// connexion Supabase
+const CFG=window.CFG||{};let sb=null;const subs={};
+const loginScreen=()=>new Promise(res=>{const em=h('input',{type:'email',placeholder:'Email',autocomplete:'username'}),pw=h('input',{type:'password',placeholder:'Mot de passe',autocomplete:'current-password'}),b=h('button',{class:'btn',onclick:async()=>{b.disabled=true;const{data,error}=await sb.auth.signInWithPassword({email:em.value.trim(),password:pw.value});b.disabled=false;if(error||!data.session)return toast('Email ou mot de passe incorrect');o.remove();res(data.session)}},'Entrer ♡'),o=h('div',{style:'position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg)'},h('div',{class:'card',style:'width:100%;max-width:340px;text-align:center'},h('h1',{style:'margin-bottom:12px'},'Nous deux'),em,pw,b));pw.addEventListener('keydown',e=>{if(e.key==='Enter')b.click()});document.body.append(o)});
+async function initBackend(){if(!CFG.url||!CFG.key)throw new Error('config');sb=supabase.createClient(CFG.url,CFG.key);let{data:{session}}=await sb.auth.getSession();if(!session)session=await loginScreen();uid=session.user.id;
+const fetchAll=st=>sb.from('docs').select('id,data').eq('col',st.col).then(r=>{if(r.error){st.eb&&st.eb(r.error);return}st.rows=new Map(r.data.map(x=>[x.id,x.data]));st.push()});
+sb.channel('docs-all').on('postgres_changes',{event:'*',schema:'public',table:'docs'},p=>{const del=p.eventType==='DELETE',r=del?p.old:p.new;(subs[r.col]||[]).forEach(st=>{del?st.rows.delete(r.id):st.rows.set(r.id,p.new.data);st.push()})}).subscribe();
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')Object.values(subs).flat().forEach(fetchAll)});
+const w=async q=>{const{error}=await q;if(error)throw error};
+db={collection:col=>({doc:id=>({set:d=>w(sb.from('docs').upsert({col,id,data:d})),update:async d=>{const{data,error}=await sb.from('docs').select('data').eq('col',col).eq('id',id).single();if(error)throw error;await w(sb.from('docs').upsert({col,id,data:{...data.data,...d}}))},delete:()=>w(sb.from('docs').delete().eq('col',col).eq('id',id))}),
+add:async d=>{const id=crypto.randomUUID();await w(sb.from('docs').upsert({col,id,data:d}));return{id}},
+onSnapshot:(cb,eb)=>{const st={col,eb,rows:new Map(),push(){cb({docs:[...this.rows].map(([id,data])=>({id,data:()=>data}))})}};(subs[col]=subs[col]||[]).push(st);fetchAll(st)}})};
+assets={upload:async b=>{const ext=((b.type||'').split('/')[1]||'bin').split(';')[0],path=uid+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;await w(sb.storage.from('media').upload(path,b,{contentType:b.type||undefined}));return{url:sb.storage.from('media').getPublicUrl(path).data.publicUrl}}}}
+// démarrage
+(async()=>{try{await initBackend()}catch(e){console.error(e)}
+if(!db){$('#warn').hidden=false;renderMoments([]);renderGoals([]);renderMovies([]);renderPhoto();return}
+list('moments',renderMoments);list('movies',renderMovies);list('goals',renderGoals);list('messages',renderMsgs);list('loc',renderLoc);
+list('photos',a=>{photos=a.sort((x,y)=>x.id<y.id?-1:1);renderPhoto()});
+list('answers',a=>{ansAll=a;renderAnswers()});list('daily',a=>{dailies=a;dLoaded=true;renderPhoto()});
+$('#sub').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})})();
+$('#sub').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+const tick=()=>{const n=td();if(n===day)return;const o=day;day=n;shuffle=0;$('#qa').value='';renderQ();renderPhoto();renderAnswers();if(sel===o){sel=n;$('#md').value=n;}drawCal();drawDay();$('#sub').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})};
+setInterval(tick,30000);document.addEventListener('visibilitychange',tick);addEventListener('focus',tick);
+</script></body></html>
