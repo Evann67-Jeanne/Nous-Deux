@@ -1,1 +1,1 @@
-window.CFG={url:cxdvfwffondifvhrukbk,key:sb_publishable_OhziN2euCEGFPsxUzExiPw_MVY0DFod}
+window.CFG={url:sb_publishable_OhziN2euCEGFPsxUzExiPw_MVY0DFod,key:sb_secret_jkL1yHOIVGoUk8jL-RmzuQ_GgqQqeZh}
